@@ -1,0 +1,20 @@
+Detta slutprojekt ska vara ett spel där man ska kunna klara av olika nivåer. Spelet ska gå ut på att uppnå ett visst poäng mål som sen för en vidare till andra nivåer.
+Man får poäng genom att undvika olika hinder som kommer komma mot spelkaraktären. Spelkaraktären ska också vara dödlig och om man dör, förlorar man.
+
+Planering:
+
+Hela programmet skall vara strukturerat och delvis testat under dess gång. Jag ska testa med testkod och planeringen ska uppfyllas till 100%. 
+Alla commits skall ha detaljerade kommentarer om vad jag ändrade/skapade sedan den senaste commiten. 
+Om problem uppstår skall jag felsöka på egen hand med hjälp av debugger, allt ska vara snyggt och prydligt(inga kompileringsfel eller exekveringsfel)
+Om optimering fel uppstår ska jag lösa detta med effektiva algoritmer och ska förklara i koden varför just den är lämplig.
+Ska kommentera på effektivt sätt och undvika onödiga kommentarer, gärna XML-kommentarer.
+Fysiken i spelet skall tittas över och göras så realistiskt som möjligt med den tid som finns.
+
+v.14 : planera, skapa filer och github länk.
+v.15: börja med grunderna på spelet(Lägga till spelaren, göra så att den kan röra sig. Och begränsa karaktären så den inte kan gå utanför skärmen osv.) 
+v.16 : Lägga till ett sätt att kunna få spelet att kunna byta nivåer, genom antingen meny eller poäng. Samt lägga till fler funktioner såsom gravitation.
+v.17: lägga till poängsystemet. Om det finns tid kan jag även här börja lägga till fler funktioner såsom en hopp-knapp med realistisk fysik.
+v.18: Lägga till hindrena och kollisionerna samt inkludera detta med poängsystemet.(Göra varje kollision till antingen minuspoäng eller någon annan form av visualisering.)
+v.19: titta över så att allt fungerar hyfsat utan stora buggar och åtgärda det buggar som finns. Om tid över fixa specialfunktioner såsom en specialattack som t.ex gör att man rör sig snabbare .
+v.20: återigen titta för buggar, men nu också försöka ta sönder spelet. Om tid finns över kommer jag att fixa det estetiska i spelet då. Också göra det som jag inte hunnit med hittills, om det är något som blivit bortprioriterat och/eller inte funkat som det ska. Detta och gå igenom betygskraven och se om det är något jag missat.
+v.20 19:e Maj: Lämna in allt efter en sista prövning av alla funktioner. 
