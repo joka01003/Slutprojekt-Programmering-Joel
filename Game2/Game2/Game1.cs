@@ -11,13 +11,17 @@ namespace Game2
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Texture2D Spelare;
+        Texture2D Bakgrund;
+        Vector2 SpelarePosition = new Vector2(100, 100);
+        Vector2 BakgrundPos = new Vector2(0, 0);
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1800;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 700;
             Content.RootDirectory = "Content";
-            Texture2D Spelare;
-            int test = 0;
+       
         }
 
         /// <summary>
@@ -41,7 +45,8 @@ namespace Game2
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            Spelare = Content.Load<Texture2D>("player");
+            Bakgrund = Content.Load<Texture2D>("bakgrund");
             // TODO: use this.Content to load your game content here
         }
 
@@ -63,8 +68,33 @@ namespace Game2
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            KeyboardState kstate = Keyboard.GetState();
 
-            // TODO: Add your update logic here
+          
+                if (kstate.IsKeyDown(Keys.D)) { SpelarePosition.X += 5; }
+                if (kstate.IsKeyDown(Keys.A)) { SpelarePosition.X -= 5; }
+                if (kstate.IsKeyDown(Keys.W))
+                {
+                    for (int i = 5; i > 0; i--)
+                    {
+                        SpelarePosition.Y -= i;
+                    }
+                }
+                if (kstate.IsKeyDown(Keys.S))
+                {
+                    for (int i = 5; i > 0; i--)
+                    {
+                        SpelarePosition.Y += i;
+                    }
+                }
+            if (SpelarePosition.X < 0) { SpelarePosition.X = 0; }
+            if (SpelarePosition.X > 1700) { SpelarePosition.X = 1700; }
+            if (SpelarePosition.Y < 0) { SpelarePosition.Y = 0; }
+            if (SpelarePosition.Y > 600) { SpelarePosition.Y = 600; }
+
+
+
+
 
             base.Update(gameTime);
         }
@@ -76,9 +106,11 @@ namespace Game2
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            spriteBatch.Draw(Bakgrund, BakgrundPos, Color.White);
+            spriteBatch.Draw(Spelare, SpelarePosition, Color.White);
 
-            // TODO: Add your drawing code here
-
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
