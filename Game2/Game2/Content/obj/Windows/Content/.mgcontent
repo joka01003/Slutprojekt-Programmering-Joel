@@ -4,10 +4,14 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/imoxi/Source/Repos/Slutprojekt-Programmering-Joel/Game2/Game2/Content/bakgrund.png</File>
-    <File>C:/Users/imoxi/Source/Repos/Slutprojekt-Programmering-Joel/Game2/Game2/Content/player.png</File>
+    <File>C:/Users/Greattech/Source/Repos/Slutprojekt-Programmering-Joel/Game2/Game2/Content/bakgrund.png</File>
+    <File>C:/Users/Greattech/Source/Repos/Slutprojekt-Programmering-Joel/Game2/Game2/Content/enemy.png</File>
+    <File>C:/Users/Greattech/Source/Repos/Slutprojekt-Programmering-Joel/Game2/Game2/Content/player.png</File>
+    <File>C:/Users/Greattech/Source/Repos/Slutprojekt-Programmering-Joel/Game2/Game2/Content/Ubuntu32.spritefont</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
