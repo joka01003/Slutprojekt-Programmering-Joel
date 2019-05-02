@@ -27,20 +27,27 @@ public class Game1 : Game
     Texture2D Spelare;
     Texture2D Bakgrund;
     Texture2D EnemyTexture;
+    Texture2D HealthTexture;
     Vector2 SpelarePosition = new Vector2(100, 100);
     Vector2 BakgrundPos = new Vector2(0, 0);
     Vector2 LeverTextPos = new Vector2(100, 100);
     Vector2 spelareHastighet = new Vector2(1, 1);
+    Vector2 spelareHitboxPos = new Vector2(100,100);
     Rectangle Pointline = new Rectangle(0, 0, 1, 2000);
+    Rectangle spelareHitbox;
+    Rectangle sköldPos;
     List<Enemy> enemyLista = new List<Enemy>();
+    List<Health> healthLista = new List<Health>();
     Random random = new Random();
     int enemyspawnchance = 30;
     int levelCount = 1;
+    int healthLevel = 100;
     float points = 0;
     bool inbound = true;
     bool gamerunning = true;
     bool debugmenu = false;
     bool gravity = true;
+    bool sköld = false;
 
 
 
@@ -78,6 +85,7 @@ public class Game1 : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
         Spelare = Content.Load<Texture2D>("player");
         EnemyTexture = Content.Load<Texture2D>("enemy");
+        HealthTexture = Content.Load<Texture2D>("redcrosspng");
         Bakgrund = Content.Load<Texture2D>("bakgrund");
         text = Content.Load<SpriteFont>("Ubuntu32");
 
@@ -104,18 +112,22 @@ public class Game1 : Game
             Exit();
         KeyboardState kstate = Keyboard.GetState();
 
-       
-            if (kstate.IsKeyDown(Keys.D))
-            {
+        spelareHitbox = new Rectangle((int)spelareHitboxPos.X, (int)spelareHitboxPos.Y, 80, 90);
+        sköldPos = new Rectangle((int)spelareHitboxPos.X, (int)spelareHitboxPos.Y, 200, 200);
+
+
+
+        if (kstate.IsKeyDown(Keys.D))
+        {
             spelareHastighet.X += 0.15f;
-              
-            }
-            if (kstate.IsKeyDown(Keys.A))
-            {
+
+        }
+        if (kstate.IsKeyDown(Keys.A))
+        {
             spelareHastighet.X += -0.15f;
         }
         SpelarePosition.X += spelareHastighet.X;
-      
+
         if (kstate.IsKeyDown(Keys.W))
         {
             gravity = false;
@@ -150,47 +162,105 @@ public class Game1 : Game
         {
             item.Update();
         }
+        foreach (var item in healthLista)
+        {
+            item.Update();
+        }
         if (gamerunning == true)
         {
             if (random.Next(1, enemyspawnchance) == 1)
             {
                 enemyLista.Add(new Enemy(EnemyTexture, new Vector2(1900, random.Next(1, 700))));
+                
+            }
 
+            if (random.Next(1, 500) == 1)
+            {
+                healthLista.Add(new Health(HealthTexture, new Vector2(1900, random.Next(1, 700))));
+                
+            }
+
+
+        }
+        if (inbound == true) {
+            if (gravity == true)
+            {
+                spelareHastighet.Y += 0.15f;
+                SpelarePosition.Y += spelareHastighet.Y;
+            }
+            if (gravity == false)
+            {
+                spelareHastighet.Y = 0f;
             }
         }
-        if(inbound == true) { 
-          if (gravity == true)
-               {
-            spelareHastighet.Y += 0.15f;
-            SpelarePosition.Y += spelareHastighet.Y;
-                }
-           if(gravity == false)
-                 {
-            spelareHastighet.Y = 0f;
-               }
-        }
 
-        if (enemyLista.Count > 50)
+        if (points > 200)
         {
             enemyspawnchance = 20; // Nivå 2
             levelCount = 2;
         }
-        if (enemyLista.Count > 100)
+        if (points > 500)
         {
             enemyspawnchance = 15; // Nivå 3
             levelCount = 3;
         }
-        if (enemyLista.Count > 150)
+        if (points > 1000)
         {
             enemyspawnchance = 10; // Nivå 4
             levelCount = 4;
         }
 
-        for( int i = 0; i < enemyLista.Count; i++)
+        for (int i = 0; i < enemyLista.Count; i++)
         {
             if (enemyLista[i].Gethitbox().Intersects(Pointline)) { points++; }
         }
 
+
+        for (int i = 0; i < enemyLista.Count; i++)
+        {
+            if (enemyLista[i].Gethitbox().Intersects(spelareHitbox))
+            {
+                points--;
+                healthLevel-=10;
+                enemyLista.RemoveAt(i);
+            }
+        }
+        for (int i = 0; i < healthLista.Count; i++)
+        {
+            if (healthLista[i].Gethitbox().Intersects(spelareHitbox))
+            {
+                if(healthLevel < 101) { healthLevel += 10; }
+                
+
+                healthLista.RemoveAt(i);
+                
+
+            }
+        }
+
+        if (kstate.IsKeyDown(Keys.Space))
+        { sköld = true; }
+        else { sköld = false; }
+            for (int i = 0; i < healthLista.Count; i++)
+            {
+            if (sköld == true)
+            {
+                if (enemyLista[i].Gethitbox().Intersects(sköldPos))
+                {
+                     
+                    enemyLista.RemoveAt(i);
+                }
+            }
+
+
+
+
+            }
+        
+        if (spelareHitboxPos.X != SpelarePosition.X)
+        { spelareHitboxPos.X = SpelarePosition.X; }
+        if (spelareHitboxPos.Y != SpelarePosition.Y)
+        { spelareHitboxPos.Y = SpelarePosition.Y; }
         base.Update(gameTime);
     }
 
@@ -207,7 +277,12 @@ public class Game1 : Game
         spriteBatch.Draw(Spelare, SpelarePosition, Color.White);
         spriteBatch.DrawString(text, "Points: " + (points).ToString(), new Vector2(300, 200), Color.White);
         spriteBatch.DrawString(text, "Level: " + levelCount.ToString(), LeverTextPos, Color.White);
+        spriteBatch.DrawString(text, "Health: " + healthLevel.ToString(), new Vector2(300, 100), Color.White);
         foreach (var item in enemyLista)
+        {
+            item.Draw(spriteBatch);
+        }
+        foreach (var item in healthLista)
         {
             item.Draw(spriteBatch);
         }

@@ -52,3 +52,4 @@ C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\W
 C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\Ubuntu32.xnb
 C:\Users\imoxi\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\enemy.xnb
 C:\Users\imoxi\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\Ubuntu32.xnb
+C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\redcrosspng.xnb

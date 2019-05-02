@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Game2
 {
-    class Enemy
+    class Health
     {
         Vector2 position;
         Texture2D texture;
@@ -18,11 +18,11 @@ namespace Game2
         Rectangle hitbox;
 
 
-        public Enemy(Texture2D texture, Vector2 position)
+        public Health(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
             this.center = position;
-            hitbox = new Rectangle((int)this.center.X, (int)this.center.Y, 70, 70);
+            hitbox = new Rectangle((int)this.center.X, (int)this.center.Y, 65, 65);
 
 
         }
@@ -31,14 +31,14 @@ namespace Game2
 
         public void Update()
         {
-            this.center.X -= 5;
-            hitbox.X -= 5;
+            this.center.X -= 3;
+            hitbox.X -= 3;
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, this.center, Color.Red);
+            spriteBatch.Draw(texture, this.center, Color.White);
             spriteBatch.Draw(texture, new Rectangle(position.ToPoint(), new Point(15, 15)), Color.White);
 
         }
