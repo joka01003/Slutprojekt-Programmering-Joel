@@ -25,7 +25,12 @@ public class Game1 : Game
     SpriteBatch spriteBatch;
     SpriteFont text;
     Texture2D Spelare;
+    Texture2D SpelareSköld;
     Texture2D Bakgrund;
+    Texture2D Bakgrund2;
+    Texture2D Bakgrund3;
+    Texture2D Bakgrund4;
+    Texture2D Bakgrund5;
     Texture2D EnemyTexture;
     Texture2D HealthTexture;
     Vector2 SpelarePosition = new Vector2(100, 100);
@@ -33,9 +38,10 @@ public class Game1 : Game
     Vector2 LeverTextPos = new Vector2(100, 100);
     Vector2 spelareHastighet = new Vector2(1, 1);
     Vector2 spelareHitboxPos = new Vector2(100,100);
+    Vector2 sköldPos = new Vector2(100, 100);
     Rectangle Pointline = new Rectangle(0, 0, 1, 2000);
     Rectangle spelareHitbox;
-    Rectangle sköldPos;
+    Rectangle sköldhitbox;
     List<Enemy> enemyLista = new List<Enemy>();
     List<Health> healthLista = new List<Health>();
     Random random = new Random();
@@ -84,9 +90,15 @@ public class Game1 : Game
         // Create a new SpriteBatch, which can be used to draw textures.
         spriteBatch = new SpriteBatch(GraphicsDevice);
         Spelare = Content.Load<Texture2D>("player");
+        SpelareSköld = Content.Load<Texture2D>("playershield");
         EnemyTexture = Content.Load<Texture2D>("enemy");
         HealthTexture = Content.Load<Texture2D>("redcrosspng");
         Bakgrund = Content.Load<Texture2D>("bakgrund");
+        Bakgrund2 = Content.Load<Texture2D>("bakgrund2");
+        Bakgrund3 = Content.Load<Texture2D>("bakgrund3");
+        Bakgrund4 = Content.Load<Texture2D>("bakgrund4");
+        Bakgrund5 = Content.Load<Texture2D>("endscreen");
+
         text = Content.Load<SpriteFont>("Ubuntu32");
 
         // TODO: use this.Content to load your game content here
@@ -113,9 +125,13 @@ public class Game1 : Game
         KeyboardState kstate = Keyboard.GetState();
 
         spelareHitbox = new Rectangle((int)spelareHitboxPos.X, (int)spelareHitboxPos.Y, 80, 90);
-        sköldPos = new Rectangle((int)spelareHitboxPos.X, (int)spelareHitboxPos.Y, 200, 200);
+        sköldhitbox = new Rectangle((int)sköldPos.X, (int)sköldPos.Y, 200, 200);
 
-
+        if(healthLevel < 1)
+        {
+            levelCount = -10;
+            gamerunning = false;
+        }
 
         if (kstate.IsKeyDown(Keys.D))
         {
@@ -215,7 +231,7 @@ public class Game1 : Game
             if (enemyLista[i].Gethitbox().Intersects(Pointline)) { points++; }
         }
 
-
+if(gamerunning == true) { 
         for (int i = 0; i < enemyLista.Count; i++)
         {
             if (enemyLista[i].Gethitbox().Intersects(spelareHitbox))
@@ -223,6 +239,20 @@ public class Game1 : Game
                 points--;
                 healthLevel-=10;
                 enemyLista.RemoveAt(i);
+
+
+            }
+
+            if (points > 0) { 
+            if (enemyLista[i].Gethitbox().Intersects(sköldhitbox))
+            {
+                if (sköld == true)
+                { enemyLista.RemoveAt(i);
+                        
+                }
+
+            }
+            }
             }
         }
         for (int i = 0; i < healthLista.Count; i++)
@@ -238,21 +268,28 @@ public class Game1 : Game
             }
         }
 
+
+
         if (kstate.IsKeyDown(Keys.Space))
-        { sköld = true; }
-        else { sköld = false; }
-            for (int i = 0; i < healthLista.Count; i++)
-            {
-            if (sköld == true)
-            {
-                if (enemyLista[i].Gethitbox().Intersects(sköldPos))
-                {
-                     
-                    enemyLista.RemoveAt(i);
-                }
-            }
+        {
+            if(points > 0)
+            sköld = true; }
+        if (kstate.IsKeyUp(Keys.Space))
+        {
+            sköld = false;
 
+        }
+        if(sköld == true)
+        {
+            points--;
+        }
 
+        if (points < 0) points = 0;
+        for (int i = 0; i < healthLista.Count; i++)
+            {
+            
+
+          
 
 
             }
@@ -260,7 +297,13 @@ public class Game1 : Game
         if (spelareHitboxPos.X != SpelarePosition.X)
         { spelareHitboxPos.X = SpelarePosition.X; }
         if (spelareHitboxPos.Y != SpelarePosition.Y)
-        { spelareHitboxPos.Y = SpelarePosition.Y; }
+        { spelareHitboxPos.Y = SpelarePosition.Y;
+        }
+        if(spelareHitboxPos.X != sköldPos.X)
+        { sköldPos.X = spelareHitboxPos.X; }
+        if (spelareHitboxPos.Y != sköldPos.Y)
+        { sköldPos.Y = spelareHitboxPos.Y; }
+
         base.Update(gameTime);
     }
 
@@ -273,8 +316,15 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         spriteBatch.Begin();
-        spriteBatch.Draw(Bakgrund, BakgrundPos, Color.White);
-        spriteBatch.Draw(Spelare, SpelarePosition, Color.White);
+        if (levelCount == 1) { spriteBatch.Draw(Bakgrund, BakgrundPos, Color.White); }
+        if (levelCount == 2) { spriteBatch.Draw(Bakgrund2, BakgrundPos, Color.White); }
+        if (levelCount == 3) { spriteBatch.Draw(Bakgrund3, BakgrundPos, Color.White); }
+        if (levelCount == 4) { spriteBatch.Draw(Bakgrund4, BakgrundPos, Color.White); }
+        if (levelCount < 0) { spriteBatch.Draw(Bakgrund5, BakgrundPos, Color.White); }
+
+       if(gamerunning == true) spriteBatch.Draw(Spelare, SpelarePosition, Color.White);
+
+       if(sköld == true) { spriteBatch.Draw(SpelareSköld, SpelarePosition, Color.White); }
         spriteBatch.DrawString(text, "Points: " + (points).ToString(), new Vector2(300, 200), Color.White);
         spriteBatch.DrawString(text, "Level: " + levelCount.ToString(), LeverTextPos, Color.White);
         spriteBatch.DrawString(text, "Health: " + healthLevel.ToString(), new Vector2(300, 100), Color.White);
@@ -289,6 +339,7 @@ public class Game1 : Game
         if (debugmenu == true)
         {
             spriteBatch.DrawString(text, "Enemycount: " + enemyLista.Count.ToString(), new Vector2(1200, 100), Color.White);
+            spriteBatch.DrawString(text, "Enemycount: " + sköld, new Vector2(1200, 300), Color.White);
             spriteBatch.DrawString(text, "Enemy spawnchance: 1/" + enemyspawnchance.ToString(), new Vector2(1200, 130), Color.White);
             spriteBatch.DrawString(text, "Click on P to stop the enemies, and then C to continue  ", new Vector2(1200, 200), Color.White);
 
