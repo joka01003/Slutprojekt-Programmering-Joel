@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Game2
-{
+{ //Se den andra klassen för kommentarer
     class Health
     {
         Vector2 position;

@@ -37,7 +37,7 @@ public class Game1 : Game
     Vector2 BakgrundPos = new Vector2(0, 0);
     Vector2 LeverTextPos = new Vector2(100, 100);
     Vector2 spelareHastighet = new Vector2(1, 1);
-    Vector2 spelareHitboxPos = new Vector2(100,100);
+    Vector2 spelareHitboxPos = new Vector2(100, 100);
     Vector2 sköldPos = new Vector2(100, 100);
     Rectangle Pointline = new Rectangle(0, 0, 1, 2000);
     Rectangle spelareHitbox;
@@ -54,7 +54,7 @@ public class Game1 : Game
     bool debugmenu = false;
     bool gravity = true;
     bool sköld = false;
-
+    //sätter massa variablar som används i koden. Alla dessa förklarar sig själva med namnen.
 
 
 
@@ -62,32 +62,24 @@ public class Game1 : Game
     public Game1()
     {
         graphics = new GraphicsDeviceManager(this);
-        graphics.PreferredBackBufferWidth = 1800;  // set this value to the desired width of your window
-        graphics.PreferredBackBufferHeight = 700;
+        graphics.PreferredBackBufferWidth = 1800;  // Sätter  bredden på skärmen
+        graphics.PreferredBackBufferHeight = 700; // Sätter  höjden på skärmen
         Content.RootDirectory = "Content";
 
     }
 
-    /// <summary>
-    /// Allows the game to perform any initialization it needs to before starting to run.
-    /// This is where it can query for any required services and load any non-graphic
-    /// related content.  Calling base.Initialize will enumerate through any components
-    /// and initialize them as well.
-    /// </summary>
+   
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
+      
 
         base.Initialize();
     }
 
-    /// <summary>
-    /// LoadContent will be called once per game and is the place to load
-    /// all of your content.
-    /// </summary>
+  
     protected override void LoadContent()
     {
-        // Create a new SpriteBatch, which can be used to draw textures.
+       // Laddar in alla texturer och texten
         spriteBatch = new SpriteBatch(GraphicsDevice);
         Spelare = Content.Load<Texture2D>("player");
         SpelareSköld = Content.Load<Texture2D>("playershield");
@@ -101,57 +93,52 @@ public class Game1 : Game
 
         text = Content.Load<SpriteFont>("Ubuntu32");
 
-        // TODO: use this.Content to load your game content here
+       
     }
 
-    /// <summary>
-    /// UnloadContent will be called once per game and is the place to unload
-    /// game-specific content.
-    /// </summary>
+    
     protected override void UnloadContent()
     {
-        // TODO: Unload any non ContentManager content here
+        
     }
 
-    /// <summary>
-    /// Allows the game to run logic such as updating the world,
-    /// checking for collisions, gathering input, and playing audio.
-    /// </summary>
-    /// <param name="gameTime">Provides a snapshot of timing values.</param>
+   
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
         KeyboardState kstate = Keyboard.GetState();
 
-        spelareHitbox = new Rectangle((int)spelareHitboxPos.X, (int)spelareHitboxPos.Y, 80, 90);
-        sköldhitbox = new Rectangle((int)sköldPos.X, (int)sköldPos.Y, 200, 200);
+        spelareHitbox = new Rectangle((int)spelareHitboxPos.X, (int)spelareHitboxPos.Y, 80, 90); //sätter spelarens hitbox på spelaren
+        sköldhitbox = new Rectangle((int)sköldPos.X, (int)sköldPos.Y, 200, 200); // sätter spelarens sköld på spelaren
 
-        if(healthLevel < 1)
+        if (healthLevel < 1) // om spelarens hälsonivå är 0 eller mindre så sätts spelet av och nivå till minus tio.
         {
             levelCount = -10;
             gamerunning = false;
         }
 
-        if (kstate.IsKeyDown(Keys.D))
+        if (kstate.IsKeyDown(Keys.D)) // sätter accelerationen när spelaren håller in D
         {
             spelareHastighet.X += 0.15f;
 
         }
-        if (kstate.IsKeyDown(Keys.A))
+        if (kstate.IsKeyDown(Keys.A)) // sätter acceleration när spelaren håller in A
         {
             spelareHastighet.X += -0.15f;
         }
         SpelarePosition.X += spelareHastighet.X;
 
-        if (kstate.IsKeyDown(Keys.W))
+        if (kstate.IsKeyDown(Keys.W)) // stänger av gravitionen när man håller in W men också flyttar spelaren uppåt.
         {
             gravity = false;
             SpelarePosition.Y -= 5;
         }
-        else
+        else // om inte W är intryckt så sätts gravitionen på.
             gravity = true;
-        if (kstate.IsKeyDown(Keys.S))
+
+
+        if (kstate.IsKeyDown(Keys.S)) // om spelaren håller in S så förflyttas karaktären neråt
         {
             SpelarePosition.Y += 5;
         }
@@ -163,54 +150,54 @@ public class Game1 : Game
         {
             debugmenu = false;
         }
-        if (kstate.IsKeyDown(Keys.P)) { gamerunning = false; }
-        if (kstate.IsKeyDown(Keys.C)) { gamerunning = true; }
+        if (kstate.IsKeyDown(Keys.P)) { gamerunning = false; } //Sätter P som Pausknapp
+        if (levelCount > 0) { if (kstate.IsKeyDown(Keys.C)) { gamerunning = true; } }// sätter C som startknapp efter paus om inte nivån är under 0.
 
-        if (SpelarePosition.X < 0) { SpelarePosition.X = 0; }
+        if (SpelarePosition.X < 0) { SpelarePosition.X = 0; } //alla dessa begränsar spelaren så den inte kan åka utanför skärmen.
         if (SpelarePosition.X > 1700) { SpelarePosition.X = 1700; }
         if (SpelarePosition.Y < 0) { SpelarePosition.Y = 0; }
         if (SpelarePosition.Y > 600) { SpelarePosition.Y = 600; }
-
-        if (SpelarePosition.X > 0 && SpelarePosition.X < 1700 && SpelarePosition.Y > -10 && SpelarePosition.Y < 600) { inbound = true; }
+        if (SpelarePosition.X > 0 && SpelarePosition.X < 1700 && SpelarePosition.Y > -10 && SpelarePosition.Y < 600) { inbound = true; } // ställer in så att gravitationen inte fungerar utanför skärmen.
         else { inbound = false; }
 
         foreach (var item in enemyLista)
         {
-            item.Update();
+            item.Update(); // uppdaterar varje objekt i enemylistan
         }
         foreach (var item in healthLista)
         {
-            item.Update();
+            item.Update(); // uppdaterar varje objekt i healthlistan
         }
         if (gamerunning == true)
         {
             if (random.Next(1, enemyspawnchance) == 1)
             {
-                enemyLista.Add(new Enemy(EnemyTexture, new Vector2(1900, random.Next(1, 700))));
-                
+                enemyLista.Add(new Enemy(EnemyTexture, new Vector2(1900, random.Next(1, 700)))); // spawnar in fiender beroende på variabeln enemyspawnchance som ändras i nivåerna.
+
             }
 
             if (random.Next(1, 500) == 1)
             {
-                healthLista.Add(new Health(HealthTexture, new Vector2(1900, random.Next(1, 700))));
-                
+                healthLista.Add(new Health(HealthTexture, new Vector2(1900, random.Next(1, 700)))); // spawnar in hälsokloten 1 gång på varje 500 uppdateringar i genomsnitt.
+
             }
 
 
         }
-        if (inbound == true) {
-            if (gravity == true)
+        if (inbound == true)
+        {
+            if (gravity == true) // om spelaren är inom skärmgränserna så sätts gravitationen på och accelererar spelaren neråt med 0.15 enheter per sekund per sekund.
             {
                 spelareHastighet.Y += 0.15f;
                 SpelarePosition.Y += spelareHastighet.Y;
             }
             if (gravity == false)
             {
-                spelareHastighet.Y = 0f;
+                spelareHastighet.Y = 0f; // om gravitationen är av så sätts hastigheten i Y led till 0.
             }
         }
 
-        if (points > 200)
+        if (points > 200) // dessa definerar poängantalet för de olika nivåerna. Och ändrar där med 
         {
             enemyspawnchance = 20; // Nivå 2
             levelCount = 2;
@@ -226,108 +213,107 @@ public class Game1 : Game
             levelCount = 4;
         }
 
-        for (int i = 0; i < enemyLista.Count; i++)
+        for (int i = 0; i < enemyLista.Count; i++) //kollar om fienderna skär poänglinjen som befinnersig i vänstra kanten av skärmen. Om de skärs så lägger denna funktion till poäng.
         {
             if (enemyLista[i].Gethitbox().Intersects(Pointline)) { points++; }
         }
 
-if(gamerunning == true) { 
-        for (int i = 0; i < enemyLista.Count; i++)
+        if (gamerunning == true) // om spelet körs och spelarens hitbox skär en fiendes hitbox så förlorar man poäng, liv och fienden tas bort.
         {
-            if (enemyLista[i].Gethitbox().Intersects(spelareHitbox))
+            for (int i = 0; i < enemyLista.Count; i++)
             {
-                points--;
-                healthLevel-=10;
-                enemyLista.RemoveAt(i);
+                if (enemyLista[i].Gethitbox().Intersects(spelareHitbox))
+                {
+                    points--;
+                    healthLevel -= 10;
+                    enemyLista.RemoveAt(i);
 
 
-            }
-
-            if (points > 0) { 
-            if (enemyLista[i].Gethitbox().Intersects(sköldhitbox))
-            {
-                if (sköld == true)
-                { enemyLista.RemoveAt(i);
-                        
                 }
 
-            }
-            }
+                if (points > 0)
+                {
+                    if (enemyLista[i].Gethitbox().Intersects(sköldhitbox)) // kollar om spelarens poäng är högre än 0. Är dem det och skölden är aktiv(genom att hålla in mellanslag) så försvinner fienderna i sköldens hitbox
+                    {
+                        if (sköld == true)
+                        {
+                            enemyLista.RemoveAt(i);
+
+                        }
+
+                    }
+                }
             }
         }
-        for (int i = 0; i < healthLista.Count; i++)
+        if (gamerunning == true)
         {
-            if (healthLista[i].Gethitbox().Intersects(spelareHitbox))
+            for (int i = 0; i < healthLista.Count; i++) // om spelet körs och spelarens hitbox skärs med en hälsoglobs hitbox så får spelaren liv och hälsogloben tas bort.
             {
-                if(healthLevel < 101) { healthLevel += 10; }
-                
+                if (healthLista[i].Gethitbox().Intersects(spelareHitbox))
+                {
+                    if (healthLevel < 101) { healthLevel += 10; }
 
-                healthLista.RemoveAt(i);
-                
 
+                    healthLista.RemoveAt(i);
+
+
+                }
             }
         }
 
+        if (healthLevel < 1)
+        { gamerunning = false; } // om hälsonivån är 0 så bryts spelet.
 
-
-        if (kstate.IsKeyDown(Keys.Space))
+        if (kstate.IsKeyDown(Keys.Space)) // Om spelarens poäng är högre än 0 och space klickas ner aktiveras skölden.
         {
-            if(points > 0)
-            sköld = true; }
-        if (kstate.IsKeyUp(Keys.Space))
+            if (points > 0)
+                sköld = true;
+        }
+        if (kstate.IsKeyUp(Keys.Space)) // om space inte är nere så är skölden inte aktiverad.
         {
             sköld = false;
 
         }
-        if(sköld == true)
+        if (sköld == true) // om skölden är på försvinner poäng.
         {
             points--;
         }
 
-        if (points < 0) points = 0;
-        for (int i = 0; i < healthLista.Count; i++)
-            {
-            
-
-          
+        if (points < 0) points = 0; // sätter de minsta poängvärde till 0.
 
 
-            }
-        
-        if (spelareHitboxPos.X != SpelarePosition.X)
+        if (spelareHitboxPos.X != SpelarePosition.X) // alla dessa sätter hitboxarnas positioner till de visuella objekten.
         { spelareHitboxPos.X = SpelarePosition.X; }
         if (spelareHitboxPos.Y != SpelarePosition.Y)
-        { spelareHitboxPos.Y = SpelarePosition.Y;
+        {
+            spelareHitboxPos.Y = SpelarePosition.Y;
         }
-        if(spelareHitboxPos.X != sköldPos.X)
+        if (spelareHitboxPos.X != sköldPos.X)
         { sköldPos.X = spelareHitboxPos.X; }
         if (spelareHitboxPos.Y != sköldPos.Y)
-        { sköldPos.Y = spelareHitboxPos.Y; }
+        { sköldPos.Y = spelareHitboxPos.Y; } //
 
         base.Update(gameTime);
     }
 
 
-    /// <summary>
-    /// This is called when the game should draw itself.
-    /// </summary>
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        spriteBatch.Begin();
+        spriteBatch.Begin(); 
         if (levelCount == 1) { spriteBatch.Draw(Bakgrund, BakgrundPos, Color.White); }
         if (levelCount == 2) { spriteBatch.Draw(Bakgrund2, BakgrundPos, Color.White); }
         if (levelCount == 3) { spriteBatch.Draw(Bakgrund3, BakgrundPos, Color.White); }
         if (levelCount == 4) { spriteBatch.Draw(Bakgrund4, BakgrundPos, Color.White); }
-        if (levelCount < 0) { spriteBatch.Draw(Bakgrund5, BakgrundPos, Color.White); }
+        if (levelCount < 0) { spriteBatch.Draw(Bakgrund5, BakgrundPos, Color.White); } // sätter alla bakgrunder beroende på nivån.
 
-       if(gamerunning == true) spriteBatch.Draw(Spelare, SpelarePosition, Color.White);
+        if (gamerunning == true) spriteBatch.Draw(Spelare, SpelarePosition, Color.White); // om spelet körs så skall spelaren visas, annars inte
 
-       if(sköld == true) { spriteBatch.Draw(SpelareSköld, SpelarePosition, Color.White); }
+        if (gamerunning == true) { if (sköld == true) { spriteBatch.Draw(SpelareSköld, SpelarePosition, Color.White); } } // om spelet körs skall skölden visas om skölden är på. annars inte.
         spriteBatch.DrawString(text, "Points: " + (points).ToString(), new Vector2(300, 200), Color.White);
         spriteBatch.DrawString(text, "Level: " + levelCount.ToString(), LeverTextPos, Color.White);
-        spriteBatch.DrawString(text, "Health: " + healthLevel.ToString(), new Vector2(300, 100), Color.White);
+        spriteBatch.DrawString(text, "Health: " + healthLevel.ToString(), new Vector2(300, 100), Color.White); // lägger ut text på olika ställen med poäng, nivån och hälsan.
         foreach (var item in enemyLista)
         {
             item.Draw(spriteBatch);
@@ -335,7 +321,7 @@ if(gamerunning == true) {
         foreach (var item in healthLista)
         {
             item.Draw(spriteBatch);
-        }
+        } // uppdaterar alla objekt i fiende och hälsolistan. 
         if (debugmenu == true)
         {
             spriteBatch.DrawString(text, "Enemycount: " + enemyLista.Count.ToString(), new Vector2(1200, 100), Color.White);
@@ -344,7 +330,7 @@ if(gamerunning == true) {
             spriteBatch.DrawString(text, "Click on P to stop the enemies, and then C to continue  ", new Vector2(1200, 200), Color.White);
 
 
-        }
+        } // om debugmenyn är på (Caps lock) så visar den information som antal fiender, om skölden är på, fiendepawnchans och hur man pausar och sätter på spelet.
         spriteBatch.End();
         base.Draw(gameTime);
     }

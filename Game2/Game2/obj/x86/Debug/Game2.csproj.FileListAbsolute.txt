@@ -59,3 +59,8 @@ C:\Users\imoxi\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windo
 C:\Users\imoxi\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\bakgrund4.xnb
 C:\Users\imoxi\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\endscreen.xnb
 C:\Users\imoxi\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\playershield.xnb
+C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\bakgrund2.xnb
+C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\bakgrund3.xnb
+C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\bakgrund4.xnb
+C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\endscreen.xnb
+C:\Users\Greattech\Source\Repos\Slutprojekt-Programmering-Joel\Game2\Game2\bin\Windows\x86\Debug\Content\playershield.xnb
